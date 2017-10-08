@@ -18,8 +18,9 @@ def generate_sql(model):
     for field in fields:
         _field = get_field(model, field)
         if _field.unique:
-            uniques.append('CREATE UNIQUE INDEX IF NOT EXISTS '+table_name+'_'+_field.name+'_uindex ON '+ table_name +' ('+_field.name+');')
-        sql += _field.sql + ', ' if fields[-1] != field else _field.sql
+            uniques.append('CREATE UNIQUE INDEX IF NOT EXISTS '+table_name+'_'+str(field)+'_uindex ON '+ table_name +' ('+str(field)+');')
+        field_sql = _field.sql.replace('<placeholder>', str(field))
+        sql += field_sql + ', ' if fields[-1] != field else field_sql
     sql += ');'
 
     for unique in uniques:
