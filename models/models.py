@@ -20,8 +20,8 @@ class Model(DataMixin):
         success = self.compare_validated(self.obj_fields, fields_types)
         if success:
             for key, value in self.obj_fields.items():
-                field = value
-                #field.value = value
+                field = getattr(self, key)
+                field.value = value
 
     def __strict_check_fail(self, result):
         for item in result:
@@ -102,8 +102,6 @@ class Model(DataMixin):
         # TODO maybe do something with sql_res
         self.db_instance.commit()
         self.__strict_check_fail(result)
-
-        return self
 
     @staticmethod
     def __dict_factory(cursor, row):
